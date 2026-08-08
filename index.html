@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ateeq Develops — Android Apps &amp; Games</title>
+<meta name="description" content="Ateeq Develops creates polished Android apps and games with a focus on simplicity, performance, and thoughtful user experience.">
+<meta name="theme-color" content="#050505">
+
+<meta property="og:title" content="Ateeq Develops — Android Apps & Games">
+<meta property="og:description" content="Ateeq Develops creates polished Android apps and games with a focus on simplicity, performance, and thoughtful user experience.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/ateeq-develops-logo.jpeg">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ateeq Develops — Android Apps & Games">
+<meta name="twitter:description" content="Ateeq Develops creates polished Android apps and games with a focus on simplicity, performance, and thoughtful user experience.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg-0:#050505;
+    --bg-1:#0a0a0a;
+    --bg-2:#0d0d0d;
+    --surface:#131313;
+    --border:rgba(255,255,255,0.08);
+    --border-strong:rgba(255,255,255,0.16);
+    --text-0:#f4f4f2;
+    --text-1:#b9b9b6;
+    --text-2:#7a7a77;
+    --glow:rgba(255,255,255,0.06);
+    --radius:14px;
+    --ease:cubic-bezier(.16,.84,.44,1);
+    --font-display:'Space Grotesk',system-ui,sans-serif;
+    --font-body:'Inter',system-ui,sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-0);
+    color:var(--text-0);
+    font-family:var(--font-body);
+    line-height:1.5;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
+  ::selection{background:#fff;color:#000;}
+
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
+    outline:2px solid #fff;
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  section{position:relative;}
+
+  /* ---------- custom cursor ---------- */
+  #cursor-dot, #cursor-ring{
+    position:fixed;top:0;left:0;pointer-events:none;z-index:9999;
+    border-radius:50%;transform:translate(-50%,-50%);
+    transition:opacity .2s;
+  }
+  #cursor-dot{width:6px;height:6px;background:#fff;}
+  #cursor-ring{width:34px;height:34px;border:1px solid rgba(255,255,255,.45);transition:width .25s var(--ease),height .25s var(--ease),border-color .25s,transform .05s linear;}
+  body.no-cursor #cursor-dot, body.no-cursor #cursor-ring{display:none;}
+  .cursor-hover #cursor-ring{width:56px;height:56px;border-color:#fff;}
+
+  /* ---------- nav ---------- */
+  #nav{
+    position:fixed;top:0;left:0;right:0;z-index:500;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 32px;
+    transition:all .4s var(--ease);
+    border-bottom:1px solid transparent;
+  }
+  #nav.scrolled{
+    padding:14px 32px;
+    background:rgba(5,5,5,0.7);
+    backdrop-filter:blur(16px) saturate(140%);
+    -webkit-backdrop-filter:blur(16px) saturate(140%);
+    border-bottom:1px solid var(--border);
+  }
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand img{width:42px;height:42px;object-fit:contain;border-radius:10px;}
+  .brand span{font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:.02em;}
+  .nav-links{display:flex;gap:36px;align-items:center;}
+  .nav-links a{font-size:14px;color:var(--text-1);transition:color .25s;position:relative;}
+  .nav-links a:hover{color:var(--text-0);}
+  .nav-links a.gh-link{
+    color:var(--text-0);border:1px solid var(--border-strong);padding:8px 16px;border-radius:100px;font-size:13px;
+  }
+  .nav-links a.gh-link:hover{background:#fff;color:#000;}
+  #menu-btn{display:none;width:32px;height:22px;position:relative;z-index:600;}
+  #menu-btn span{position:absolute;left:0;width:100%;height:1.5px;background:#fff;transition:all .3s var(--ease);}
+  #menu-btn span:nth-child(1){top:0;}
+  #menu-btn span:nth-child(2){top:10px;}
+  #menu-btn span:nth-child(3){top:20px;}
+  #menu-btn.open span:nth-child(1){transform:translateY(10px) rotate(45deg);}
+  #menu-btn.open span:nth-child(2){opacity:0;}
+  #menu-btn.open span:nth-child(3){transform:translateY(-10px) rotate(-45deg);}
+
+  #mobile-menu{
+    position:fixed;inset:0;background:#050505;z-index:400;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+    opacity:0;pointer-events:none;transition:opacity .35s var(--ease);
+  }
+  #mobile-menu.open{opacity:1;pointer-events:auto;}
+  #mobile-menu a{font-family:var(--font-display);font-size:28px;font-weight:500;}
+
+  /* ---------- hero ---------- */
+  #hero{
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding-top:120px;padding-bottom:80px;
+    position:relative;overflow:hidden;
+  }
+  #hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;}
+  #glow{
+    position:absolute;width:600px;height:600px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,0.05) 0%,rgba(255,255,255,0) 70%);
+    transform:translate(-50%,-50%);
+    left:50%;top:40%;
+    transition:left .3s ease-out, top .3s ease-out;
+  }
+  .grid-bg{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 30%, #000 40%, transparent 100%);
+  }
+  .particle{position:absolute;background:rgba(255,255,255,.35);border-radius:50%;}
+
+  .hero-inner{position:relative;z-index:2;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--font-body);font-size:12px;letter-spacing:.18em;color:var(--text-1);
+    border:1px solid var(--border);padding:7px 14px;border-radius:100px;margin-bottom:28px;
+  }
+  .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:#fff;}
+
+  h1.headline{
+    font-family:var(--font-display);font-weight:600;
+    font-size:clamp(40px,7.5vw,84px);
+    line-height:1.02;letter-spacing:-.02em;
+    margin-bottom:28px;max-width:900px;
+  }
+  h1.headline .line{display:block;overflow:hidden;}
+  h1.headline .word{
+    display:inline-block;opacity:0;transform:translateY(30px);filter:blur(6px);
+    animation:wordReveal .8s var(--ease) forwards;
+  }
+  @keyframes wordReveal{to{opacity:1;transform:translateY(0);filter:blur(0);}}
+
+  .subhead{max-width:520px;color:var(--text-1);font-size:17px;margin-bottom:40px;
+    opacity:0;animation:fadeUp .8s var(--ease) forwards;animation-delay:.9s;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+  .btn-row{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s var(--ease) forwards;animation-delay:1.05s;}
+
+  .btn{
+    position:relative;display:inline-flex;align-items:center;gap:8px;
+    padding:14px 26px;border-radius:100px;font-size:14px;font-weight:500;
+    transition:transform .25s var(--ease);
+  }
+  .btn-primary{background:#fff;color:#050505;}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--border-strong);color:var(--text-0);}
+  .btn-ghost:hover{background:rgba(255,255,255,.06);transform:translateY(-2px);}
+  .btn-disabled{border:1px solid var(--border);color:var(--text-2);cursor:not-allowed;}
+  .btn .arrow{transition:transform .3s var(--ease);}
+  .btn:hover .arrow{transform:translateX(4px);}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(36px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- section shared ---------- */
+  .eyebrow-sm{font-size:12px;letter-spacing:.18em;color:var(--text-2);text-transform:uppercase;margin-bottom:14px;}
+  .section-title{font-family:var(--font-display);font-weight:600;font-size:clamp(28px,4vw,44px);letter-spacing:-.01em;max-width:640px;}
+  .section-pad{padding:130px 0;}
+  .divider{height:1px;background:var(--border);width:100%;}
+
+  /* ---------- design principles ---------- */
+  #principles{padding:110px 0;}
+  .principle-row{display:flex;flex-direction:column;}
+  .principle{
+    display:flex;align-items:baseline;justify-content:space-between;
+    padding:34px 0;border-top:1px solid var(--border);
+  }
+  .principle:last-child{border-bottom:1px solid var(--border);}
+  .principle h3{font-family:var(--font-display);font-weight:600;font-size:clamp(30px,6vw,64px);letter-spacing:-.02em;
+    opacity:.18;transition:opacity .5s var(--ease),transform .5s var(--ease);transform:translateX(-14px);}
+  .principle.in h3{opacity:1;transform:translateX(0);}
+  .principle p{max-width:280px;color:var(--text-2);font-size:14px;text-align:right;}
+
+  /* ---------- projects ---------- */
+  #apps{padding:60px 0 40px;scroll-margin-top:90px;}
+  .project-card{
+    border:1px solid var(--border);border-radius:24px;
+    padding:56px;margin-bottom:28px;
+    display:grid;grid-template-columns:340px 1fr;gap:56px;align-items:center;
+    background:linear-gradient(160deg,rgba(255,255,255,.025),rgba(255,255,255,0) 60%);
+    transition:border-color .35s,transform .35s var(--ease);
+    position:relative;overflow:hidden;
+  }
+  .project-card:hover{border-color:var(--border-strong);}
+  .project-card .icon-wrap{
+    position:relative;border-radius:20px;overflow:hidden;aspect-ratio:1/1;
+    background:var(--surface);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .project-card .icon-wrap img{width:100%;height:100%;object-fit:cover;}
+  .status-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-1);
+    border:1px solid var(--border-strong);padding:6px 12px;border-radius:100px;margin-bottom:18px;
+  }
+  .status-badge.live::before{content:'';width:6px;height:6px;border-radius:50%;background:#8bff9c;animation:pulse 2s infinite;}
+  .status-badge.soon::before{content:'';width:6px;height:6px;border-radius:50%;background:#7a7a77;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+  .project-info h3{font-family:var(--font-display);font-size:30px;font-weight:600;margin-bottom:10px;letter-spacing:-.01em;}
+  .project-info .tagline{color:var(--text-1);font-size:16px;margin-bottom:20px;}
+  .tech-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px;}
+  .tech-tags span{font-size:12px;color:var(--text-2);border:1px solid var(--border);padding:5px 12px;border-radius:100px;}
+  .project-btns{display:flex;gap:12px;flex-wrap:wrap;}
+  .project-btns .btn{padding:12px 20px;font-size:13px;}
+
+  .placeholder-icon{
+    width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+    color:var(--text-2);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    border:1px dashed var(--border-strong);border-radius:20px;
+  }
+
+  @media (max-width:820px){
+    .project-card{grid-template-columns:1fr;padding:32px;}
+    .project-card .icon-wrap{max-width:180px;}
+  }
+
+  /* ---------- screenshots ---------- */
+  #gallery{padding:20px 0 130px;}
+  .gallery-scroll{
+    display:flex;gap:20px;overflow-x:auto;padding:30px 0 10px;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  }
+  .gallery-scroll::-webkit-scrollbar{height:6px;}
+  .gallery-scroll::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:10px;}
+  .shot{
+    flex:0 0 220px;scroll-snap-align:start;border-radius:18px;overflow:hidden;
+    border:1px solid var(--border);position:relative;cursor:pointer;
+    transition:transform .4s var(--ease),border-color .4s;
+    aspect-ratio:9/16;background:var(--surface);display:flex;align-items:center;justify-content:center;
+  }
+  .shot img{width:100%;height:100%;object-fit:contain;transition:transform .5s var(--ease);background:#0b0b0b;}
+  .shot::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(120deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,0) 30%);
+    opacity:0;transition:opacity .4s;
+  }
+  .shot:hover{transform:translateY(-8px);border-color:var(--border-strong);}
+  .shot:hover img{transform:scale(1.06);}
+  .shot:hover::after{opacity:1;}
+  .asset-error{display:flex!important;align-items:center;justify-content:center;min-height:180px;color:var(--text-2);font-size:12px;text-align:center;padding:20px;}
+
+  /* modal */
+  #modal{
+    position:fixed;inset:0;background:rgba(3,3,3,.94);backdrop-filter:blur(10px);
+    z-index:800;display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
+  }
+  #modal.open{opacity:1;pointer-events:auto;}
+  #modal img{max-height:82vh;max-width:min(90vw,420px);border-radius:16px;
+    transform:scale(.94);transition:transform .35s var(--ease);}
+  #modal.open img{transform:scale(1);}
+  .modal-btn{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:46px;height:46px;border-radius:50%;border:1px solid var(--border-strong);
+    display:flex;align-items:center;justify-content:center;color:#fff;
+    transition:background .25s;
+  }
+  .modal-btn:hover{background:rgba(255,255,255,.1);}
+  #modal-prev{left:24px;} #modal-next{right:24px;}
+  #modal-close{position:absolute;top:24px;right:24px;width:42px;height:42px;border-radius:50%;
+    border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;}
+  @media (max-width:640px){.modal-btn{display:none;}}
+
+  /* ---------- about ---------- */
+  #about{padding:130px 0;}
+  #about p{max-width:600px;font-size:19px;color:var(--text-1);line-height:1.65;}
+
+  /* ---------- tech ---------- */
+  #tech{padding:0 0 130px;}
+  .tech-grid{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px;}
+  .tech-item{
+    display:flex;align-items:center;gap:10px;border:1px solid var(--border);
+    padding:14px 20px;border-radius:100px;transition:border-color .3s,transform .3s;
+  }
+  .tech-item:hover{border-color:var(--border-strong);transform:translateY(-3px);}
+  .tech-item svg{width:18px;height:18px;stroke:var(--text-1);}
+  .tech-item span{font-size:14px;color:var(--text-1);}
+
+  /* ---------- github ---------- */
+  #github{padding:100px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .gh-flex{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:32px;}
+  .gh-flex p{max-width:460px;color:var(--text-1);font-size:16px;}
+
+  /* ---------- contact ---------- */
+  #contact{padding:150px 0;text-align:center;}
+  #contact .eyebrow-sm{justify-content:center;display:flex;}
+  #contact h2{font-family:var(--font-display);font-weight:600;font-size:clamp(32px,6vw,58px);letter-spacing:-.02em;margin-bottom:18px;}
+  #contact p{color:var(--text-1);font-size:17px;margin-bottom:36px;}
+  #contact .btn{padding:16px 32px;}
+
+  /* ---------- footer ---------- */
+  footer{padding:50px 0;border-top:1px solid var(--border);}
+  .footer-flex{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;}
+  .footer-brand{display:flex;align-items:center;gap:10px;}
+  .footer-brand img{width:30px;height:30px;border-radius:8px;object-fit:contain;}
+  .footer-brand span{font-family:var(--font-display);font-weight:600;font-size:14px;}
+  .footer-links{display:flex;gap:26px;}
+  .footer-links a{font-size:13px;color:var(--text-2);transition:color .25s;}
+  .footer-links a:hover{color:var(--text-0);}
+  .footer-copy{font-size:12px;color:var(--text-2);margin-top:6px;}
+
+  @media (max-width:900px){
+    .nav-links{gap:22px;}
+    .nav-links a:not(.gh-link){display:none;}
+  }
+  @media (max-width:720px){
+    #menu-btn{display:block;}
+    .nav-links{display:none;}
+    .wrap{padding:0 22px;}
+    .section-pad{padding:80px 0;}
+    #about, #principles, #github, #contact{padding:80px 0;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- ================= NAV ================= -->
+<nav id="nav">
+  <a href="#hero" class="brand" aria-label="Ateeq Develops home">
+    <img src="./assets/ateeq-develops-logo.jpeg" alt="Ateeq Develops logo" loading="eager">
+    <span>ATEEQ DEVELOPS</span>
+  </a>
+  <div class="nav-links">
+    <a href="#hero">Home</a>
+    <a href="#apps">Apps</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a class="gh-link" href="https://github.com/AteeqDevelops" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <button id="menu-btn" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</nav>
+
+<div id="mobile-menu">
+  <a href="#hero">Home</a>
+  <a href="#apps">Apps</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+  <a href="https://github.com/AteeqDevelops" target="_blank" rel="noopener">GitHub</a>
+</div>
+
+<!-- ================= HERO ================= -->
+<header id="hero">
+  <div id="hero-bg">
+    <div class="grid-bg"></div>
+    <div id="glow"></div>
+  </div>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">ANDROID DEVELOPER</div>
+    <h1 class="headline">
+      <span class="line"><span class="word" style="animation-delay:.05s">Building</span> <span class="word" style="animation-delay:.15s">apps</span></span>
+      <span class="line"><span class="word" style="animation-delay:.3s">people</span> <span class="word" style="animation-delay:.42s">enjoy</span> <span class="word" style="animation-delay:.54s">using.</span></span>
+    </h1>
+    <p class="subhead">Ateeq Develops creates focused Android applications with clean interfaces, thoughtful interactions, and attention to detail.</p>
+    <div class="btn-row">
+      <a href="#apps" class="btn btn-primary">Explore Apps <span class="arrow">→</span></a>
+      <a href="https://github.com/AteeqDevelops" target="_blank" rel="noopener" class="btn btn-ghost">GitHub <span class="arrow">↗</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- ================= DESIGN PRINCIPLES ================= -->
+<section id="principles">
+  <div class="wrap principle-row">
+    <div class="principle reveal"><h3>Simplicity</h3><p>Interfaces that get out of the way, so the work is the focus.</p></div>
+    <div class="principle reveal"><h3>Performance</h3><p>Fast on real devices, not just on the newest hardware.</p></div>
+    <div class="principle reveal"><h3>Detail</h3><p>The small decisions — spacing, motion, wording — add up.</p></div>
+  </div>
+</section>
+
+<!-- ================= APPS ================= -->
+<section id="apps">
+  <div class="wrap">
+    <div class="eyebrow-sm reveal">Projects</div>
+    <h2 class="section-title reveal" style="margin-bottom:56px;">Apps &amp; games, built end to end.</h2>
+
+    <!-- Project 1: Image Background Eraser -->
+    <div class="project-card reveal" id="background-eraser">
+      <div class="icon-wrap">
+        <img id="background-eraser-icon"
+             src="https://play-lh.googleusercontent.com/uMUlWdcUC_Q4-ohRiR1sK9rjihXL6za3qdE4lyyEmdBqA9hNLAzzDPb6y6tvdqMUx11L6HRJz9kLY0xQUI0Y3Bo=w480-h480"
+             alt="Offline Background Remover AI app icon"
+             loading="eager"
+             referrerpolicy="no-referrer">
+      </div>
+      <div class="project-info">
+        <span class="status-badge live">Available on Google Play</span>
+        <h3>Offline Background Remover AI</h3>
+        <p class="tagline">AI-powered background removal made simple.</p>
+        <p style="color:var(--text-1);font-size:14px;max-width:480px;margin-bottom:22px;">
+          One-tap AI background removal with automatic subject detection, transparent PNG export, background replacement, manual touch-up tools, and offline processing.
+        </p>
+        <div class="tech-tags"><span>Kotlin</span><span>Android</span><span>Material 3</span></div>
+        <div class="project-btns">
+          <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.ateeqdevelops.backgrounderaser" target="_blank" rel="noopener">Get it on Google Play</a>
+          <a class="btn btn-ghost" href="https://github.com/AteeqDevelops/imagebackgroundremover" target="_blank" rel="noopener">View on GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/AteeqDevelops/imagebackgroundremover/releases" target="_blank" rel="noopener">Releases</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 2: Image Size Reducer -->
+    <div class="project-card reveal">
+      <div class="icon-wrap"><div class="placeholder-icon">App Icon</div></div>
+      <div class="project-info">
+        <span class="status-badge soon">Coming Soon</span>
+        <h3>Image Size Reducer</h3>
+        <p class="tagline">An Android utility for reducing image file size.</p>
+        <p style="color:var(--text-1);font-size:14px;max-width:480px;margin-bottom:22px;">Details coming soon.</p>
+        <div class="tech-tags"><span>Kotlin</span><span>Android</span></div>
+        <div class="project-btns">
+          <span class="btn btn-disabled" aria-disabled="true">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 3: Microverse Survivor -->
+    <div class="project-card reveal">
+      <div class="icon-wrap" style="background:radial-gradient(circle at 30% 30%, #1a1a1a, #050505);">
+        <svg width="70%" height="70%" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="18" stroke="#fff" stroke-opacity="0.5" stroke-width="1"/>
+          <circle cx="50" cy="50" r="34" stroke="#fff" stroke-opacity="0.25" stroke-width="1"/>
+          <circle cx="50" cy="16" r="3" fill="#fff" fill-opacity="0.7"/>
+          <circle cx="84" cy="50" r="2" fill="#fff" fill-opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="project-info">
+        <span class="status-badge soon">Coming Soon</span>
+        <h3>Microverse Survivor</h3>
+        <p class="tagline">A minimalist survival experience for Android.</p>
+        <div class="tech-tags"><span>Kotlin</span><span>Android</span></div>
+        <div class="project-btns">
+          <span class="btn btn-disabled" aria-disabled="true">Coming Soon</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALLERY ================= -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="eyebrow-sm reveal">Offline Background Remover AI</div>
+    <h2 class="section-title reveal">A closer look.</h2>
+    <p class="reveal" style="color:var(--text-2);margin-top:12px;font-size:13px;">Screenshots shown from the current Google Play listing.</p>
+    <div class="gallery-scroll" id="gallery-scroll">
+      <!-- screenshots loaded via CONFIG/JS -->
+    </div>
+  </div>
+</section>
+
+<div id="modal" role="dialog" aria-modal="true" aria-label="Screenshot viewer">
+  <button id="modal-close" aria-label="Close">✕</button>
+  <button id="modal-prev" class="modal-btn" aria-label="Previous screenshot">‹</button>
+  <img id="modal-img" src="" alt="">
+  <button id="modal-next" class="modal-btn" aria-label="Next screenshot">›</button>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap">
+    <div class="eyebrow-sm reveal">About</div>
+    <h2 class="section-title reveal" style="margin-bottom:26px;">Building with purpose.</h2>
+    <p class="reveal">Ateeq Develops is an independent Android development brand focused on creating useful applications and experiences with clean design, thoughtful interactions, and a strong attention to detail.</p>
+  </div>
+</section>
+
+<!-- ================= TECH ================= -->
+<section id="tech">
+  <div class="wrap">
+    <div class="eyebrow-sm reveal">Technology</div>
+    <h2 class="section-title reveal">Tools of the trade.</h2>
+    <div class="tech-grid">
+      <div class="tech-item reveal"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 3h18v18H3z"/></svg><span>Kotlin</span></div>
+      <div class="tech-item reveal"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/></svg><span>Android</span></div>
+      <div class="tech-item reveal"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="3"/></svg><span>Material 3</span></div>
+      <div class="tech-item reveal"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M6 3v18M6 9h6a3 3 0 0 0 3-3V3M6 15h6a3 3 0 0 1 3 3v3"/></svg><span>Git</span></div>
+      <div class="tech-item reveal"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 2 2 12l10 10 10-10z"/></svg><span>GitHub</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GITHUB ================= -->
+<section id="github">
+  <div class="wrap gh-flex">
+    <div>
+      <div class="eyebrow-sm reveal">Open Source</div>
+      <h2 class="section-title reveal" style="margin-bottom:16px;">Explore the code.</h2>
+      <p class="reveal">Ateeq Develops projects are available on GitHub, starting with Image Background Eraser.</p>
+    </div>
+    <a class="btn btn-primary reveal" href="https://github.com/AteeqDevelops/imagebackgroundremover" target="_blank" rel="noopener">View Source <span class="arrow">↗</span></a>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="eyebrow-sm reveal">Have an idea?</div>
+    <h2 class="reveal">Let's build something useful.</h2>
+    <p class="reveal">For questions, feedback, or collaboration — reach out directly.</p>
+    <a class="btn btn-primary reveal" href="mailto:ateeqdevelops@gmail.com">ateeqdevelops@gmail.com</a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap footer-flex">
+    <div>
+      <div class="footer-brand">
+        <img src="./assets/ateeq-develops-logo.jpeg" alt="Ateeq Develops logo" loading="eager">
+        <span>ATEEQ DEVELOPS</span>
+      </div>
+      <div class="footer-copy">© 2026 Ateeq Develops</div>
+    </div>
+    <div class="footer-links">
+      <a href="#apps">Apps</a>
+      <a href="https://github.com/AteeqDevelops" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://play.google.com/store/apps/dev?id=9135816812153239043" target="_blank" rel="noopener">Google Play</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   CONFIG — replace with local assets any time.
+   Currently pointing at the live Google Play CDN so the
+   real icon/screenshots render immediately. To use local
+   files instead, download the images and update the paths
+   below (folders already exist under /assets/).
+========================================================= */
+const CONFIG = {
+        googlePlayDeveloper: "https://play.google.com/store/apps/dev?id=9135816812153239043",
+  logo: "./assets/ateeq-develops-logo.jpeg",
+
+  backgroundEraser: {
+    icon: "assets/background-eraser/icon.png", // place the downloaded Play icon here
+    // Current Google Play CDN asset for the exact package com.ateeqdevelops.backgrounderaser:
+    iconRemote: "https://play-lh.googleusercontent.com/uMUlWdcUC_Q4-ohRiR1sK9rjihXL6za3qdE4lyyEmdBqA9hNLAzzDPb6y6tvdqMUx11L6HRJz9kLY0xQUI0Y3Bo=w480-h480",
+    screenshots: [
+      // Local target paths — download the real screenshots from the Play listing
+      // and save them here as screenshot-1.png ... screenshot-5.png.
+      "assets/background-eraser/screenshot-1.png",
+      "assets/background-eraser/screenshot-2.png",
+      "assets/background-eraser/screenshot-3.png",
+      "assets/background-eraser/screenshot-4.png",
+      "assets/background-eraser/screenshot-5.png"
+    ],
+    // Current Google Play CDN screenshots for the exact Google Play listing:
+    screenshotsRemote: [
+      "https://play-lh.googleusercontent.com/aj3aIcoGNRj_VmNFAIn01e4YuXqmxZgLsW7YSKgOE6G2QHiGgiA7RgearWSsdTTl_AuHODfmIsqu5cRF9XQr=w526-h296",
+      "https://play-lh.googleusercontent.com/AMrRJbw5rrU0Yu3Wx6oXIK_1oMUf9B6rklGZMmgWj2ZBfuPQ63XcuBhXl-i1yWWekX4J5SOXG9-jEDGK_zi7Pw=w526-h296",
+      "https://play-lh.googleusercontent.com/rDEXSOxdy3YIP-_oSvIFj20mmPp85QZPkO1j8hDE9PzOT3aWpJoAbWTscy1jXNLaSA0-ZxvNlolwqZOncnUfhQ=w526-h296",
+      "https://play-lh.googleusercontent.com/8DhEmS-0Sho9_jURd0aMEumSM5QdOvGCfU_jvwmF3vHWc6Tc_lYxjmGl9qo8ApHnD1PK_C-lJYu0n-T4Fok9Fg=w526-h296",
+      "https://play-lh.googleusercontent.com/7oSeUzaQRks25WaUq1YZ-GpFWDIN1mDsw0sXgKZkkjFyjU-QGNiBBUTdEBbKEpC3SAEj2hje0Jvy4EynqXqXk_k=w526-h296"
+    ],
+    playStore: "https://play.google.com/store/apps/details?id=com.ateeqdevelops.backgrounderaser",
+    github: "https://github.com/AteeqDevelops/imagebackgroundremover",
+    releases: "https://github.com/AteeqDevelops/imagebackgroundremover/releases"
+  },
+
+  imageSizeReducer: {
+    icon: "assets/image-size-reducer/icon.png"
+  },
+
+  microverseSurvivor: {
+    icon: "assets/microverse-survivor/icon.png"
+  }
+};
+
+/* ---------- Play Store assets ----------
+   GitHub Pages cannot scrape the Google Play HTML page directly because
+   browser CORS rules block cross-origin page fetching. The URLs below are
+   the actual play-lh.googleusercontent.com assets currently referenced by
+   the exact Play Store listing for this app. The page uses them directly,
+   with local GitHub assets as fallbacks if you later upload them.
+--------------------------------------------------------------- */
+function setImageWithFallback(img, remote, local, alt) {
+  img.alt = alt || img.alt || '';
+  img.referrerPolicy = 'no-referrer';
+  img.src = remote;
+  img.onerror = function () {
+    if (local && img.src !== new URL(local, document.baseURI).href) {
+      img.onerror = function () {
+        img.classList.add('asset-error');
+        img.alt = alt || 'Image unavailable';
+      };
+      img.src = local;
+    } else {
+      img.classList.add('asset-error');
+    }
+  };
+}
+
+(function initPlayStoreAssets(){
+  const icon = document.getElementById('background-eraser-icon');
+  if (icon) {
+    setImageWithFallback(
+      icon,
+      CONFIG.backgroundEraser.iconRemote,
+      CONFIG.backgroundEraser.icon,
+      'Offline Background Remover AI app icon'
+    );
+  }
+
+  const track = document.getElementById('gallery-scroll');
+  if (!track) return;
+
+  const shots = CONFIG.backgroundEraser.screenshotsRemote;
+  const localShots = CONFIG.backgroundEraser.screenshots;
+
+  shots.forEach((remote, i) => {
+    const div = document.createElement('div');
+    div.className = 'shot';
+    div.tabIndex = 0;
+    div.setAttribute('role','button');
+    div.setAttribute('aria-label', 'Open screenshot ' + (i+1) + ' of ' + shots.length);
+    div.dataset.index = i;
+
+    const img = document.createElement('img');
+    img.alt = 'Image Background Eraser screenshot ' + (i+1);
+    img.loading = i < 2 ? 'eager' : 'lazy';
+    setImageWithFallback(img, remote, localShots[i], img.alt);
+
+    div.appendChild(img);
+    div.addEventListener('click', () => openModal(i));
+    div.addEventListener('keydown', e => {
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openModal(i);
+      }
+    });
+    track.appendChild(div);
+  });
+})();
+
+/* ---------- modal viewer ---------- */
+let modalIndex = 0;
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modal-img');
+function openModal(i){
+  modalIndex = i;
+  updateModal();
+  modal.classList.add('open');
+}
+function updateModal(){
+  const shots = CONFIG.backgroundEraser.screenshotsRemote;
+  modalImg.referrerPolicy = 'no-referrer';
+  modalImg.src = shots[modalIndex];
+  modalImg.alt = 'Image Background Eraser screenshot ' + (modalIndex+1);
+}
+function closeModal(){ modal.classList.remove('open'); }
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-prev').addEventListener('click', () => {
+  const n = CONFIG.backgroundEraser.screenshotsRemote.length;
+  modalIndex = (modalIndex - 1 + n) % n; updateModal();
+});
+document.getElementById('modal-next').addEventListener('click', () => {
+  const n = CONFIG.backgroundEraser.screenshotsRemote.length;
+  modalIndex = (modalIndex + 1) % n; updateModal();
+});
+modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => {
+  if(!modal.classList.contains('open')) return;
+  if(e.key === 'Escape') closeModal();
+  if(e.key === 'ArrowLeft') document.getElementById('modal-prev').click();
+  if(e.key === 'ArrowRight') document.getElementById('modal-next').click();
+});
+/* basic touch swipe */
+let touchX = null;
+modal.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; });
+modal.addEventListener('touchend', e => {
+  if(touchX === null) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if(dx > 50) document.getElementById('modal-prev').click();
+  if(dx < -50) document.getElementById('modal-next').click();
+  touchX = null;
+});
+
+/* ---------- nav scroll state ---------- */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+}, { passive:true });
+
+/* ---------- smooth anchor scroll (explicit, offset for fixed nav) ---------- */
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    const id = link.getAttribute('href');
+    if(id.length < 2) return;
+    const target = document.querySelector(id);
+    if(!target) return;
+    e.preventDefault();
+    const navH = nav.classList.contains('scrolled') ? 64 : 90;
+    const y = target.getBoundingClientRect().top + window.pageYOffset - navH;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  });
+});
+
+/* ---------- mobile menu ---------- */
+const menuBtn = document.getElementById('menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+menuBtn.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  menuBtn.classList.toggle('open', open);
+  menuBtn.setAttribute('aria-expanded', open);
+});
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  mobileMenu.classList.remove('open'); menuBtn.classList.remove('open');
+}));
+
+/* ---------- scroll reveal ---------- */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+}, { threshold:0.15 });
+document.querySelectorAll('.reveal, .principle').forEach(el => io.observe(el));
+
+/* ---------- mouse-following glow + custom cursor ---------- */
+const isTouch = matchMedia('(hover:none), (pointer:coarse)').matches;
+if(isTouch){ document.body.classList.add('no-cursor'); }
+const glow = document.getElementById('glow');
+const cursorDot = document.getElementById('cursor-dot');
+const cursorRing = document.getElementById('cursor-ring');
+
+document.addEventListener('mousemove', (e) => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+  if(!isTouch){
+    cursorDot.style.left = e.clientX + 'px';
+    cursorDot.style.top = e.clientY + 'px';
+    cursorRing.style.left = e.clientX + 'px';
+    cursorRing.style.top = e.clientY + 'px';
+  }
+});
+
+if(!isTouch){
+  document.querySelectorAll('a, button, .shot, [tabindex]').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+}
+
+/* ---------- magnetic buttons ---------- */
+if(!isTouch){
+  document.querySelectorAll('.btn:not(.btn-disabled)').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width/2;
+      const y = e.clientY - r.top - r.height/2;
+      btn.style.transform = `translate(${x*0.18}px, ${y*0.35}px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
+}
+
+/* ---------- ambient floating particles (minimal) ---------- */
+(function particles(){
+  const host = document.getElementById('hero-bg');
+  const count = matchMedia('(max-width:720px)').matches ? 6 : 14;
+  for(let i=0;i<count;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*2 + 1;
+    p.style.width = size+'px'; p.style.height = size+'px';
+    p.style.left = Math.random()*100+'%';
+    p.style.top = Math.random()*100+'%';
+    p.style.opacity = (Math.random()*0.4+0.1).toFixed(2);
+    host.appendChild(p);
+    const dur = Math.random()*10+10;
+    p.animate(
+      [{ transform:'translateY(0px)' }, { transform:`translateY(${-30-Math.random()*30}px)` }, { transform:'translateY(0px)' }],
+      { duration: dur*1000, iterations: Infinity, easing:'ease-in-out' }
+    );
+  }
+})();
+</script>
+</body>
+</html>
