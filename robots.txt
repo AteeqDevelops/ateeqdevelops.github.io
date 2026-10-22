@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://ateeqdevelops.github.io/sitemap.xml
